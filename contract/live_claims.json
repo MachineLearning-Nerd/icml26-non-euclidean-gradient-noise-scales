@@ -1,0 +1,33 @@
+{
+  "orid": "XMSaWRpEPS",
+  "submission_number": 17740,
+  "title": "Adaptive Batch Sizes Using Non-Euclidean Gradient Noise Scales for Stochastic Sign and Spectral Descent",
+  "area": "Optimization",
+  "subarea": "Stochastic",
+  "openreview": "https://openreview.net/forum?id=XMSaWRpEPS",
+  "arxiv": "2602.03001",
+  "claims": [
+    {
+      "text": "Table 2 reports that the non-Euclidean GNS adaptive batch size strategy achieves a 66.61% reduction in optimizer steps for Signum and a 66.77% reduction for Muon, when training a 160M-parameter Llama 3 model on 3.2B C4 tokens, while matching or beating constant-batch validation loss (Table 2).",
+      "status": "unverified"
+    },
+    {
+      "text": "For signSGD and AdamW, the non-Euclidean GNS strategy yields step reductions of 22.58% and 67.13% respectively on the same 160M Llama 3 / C4 setup, with specSGD achieving 16.49% (Table 2).",
+      "status": "unverified"
+    },
+    {
+      "text": "The non-Euclidean gradient noise scales for signSGD and specSGD are derived as squared ratios of dual norms: the Manhattan (\u21131) GNS \u2016\u03c3_k\u2016\u2081\u00b2/\u2016\u2207L(x_k)\u2016\u2081\u00b2 for signSGD and the Nuclear (S1) GNS \u2016C_row,k^{1/2}\u2016_{S1}\u00b2/\u2016\u2207L(X_k)\u2016_{S1}\u00b2 for specSGD (Table 1, Section 3).",
+      "status": "unverified"
+    },
+    {
+      "text": "On 1B-parameter Llama 3 models, the adaptive strategy achieves 31.84% and 12.11% step reductions for signSGD and Signum respectively, while AdamW fails to reach the constant-batch baseline validation loss under the adaptive strategy (Section 5.1, Table 3).",
+      "status": "unverified"
+    },
+    {
+      "text": "The efficient variance estimation procedure (Algorithm 1) computes coordinate-wise variance and row-wise covariance estimates directly from per-rank local mini-batch gradients via an AllReduce/ReduceScatter, avoiding expensive auxiliary passes in distributed data-parallel (DDP/FSDP) training (Section 4.1, Algorithm 1).",
+      "status": "unverified"
+    }
+  ],
+  "claim_count": 5,
+  "max_points": 10
+}
