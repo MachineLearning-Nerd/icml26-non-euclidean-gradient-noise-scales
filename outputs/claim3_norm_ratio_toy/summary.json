@@ -1,0 +1,9 @@
+{
+  "l1_gns": 0.48195497964664763,
+  "s1_gns": 0.23082879701965114,
+  "scale7_control": {
+    "l1_gns": 0.48195497964664763,
+    "s1_gns": 0.23082879701965114
+  },
+  "scope": "toy; finite local gradients, no DDP/FSDP or Llama training"
+}

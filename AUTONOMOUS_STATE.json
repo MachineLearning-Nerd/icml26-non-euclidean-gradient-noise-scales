@@ -1,1 +1,34 @@
-{"schema_version":1,"openreview_id":"XMSaWRpEPS","phase":"claim_1_source_cpu_audit_complete_inconclusive","next_action":"claim_3_finite_norm_ratio_toy","active_run_ids":[],"completed_milestones":["live_duplicate_gate","live_contract_saved","source_pinned","claim_1_source_cpu_audit"],"failed_attempts":[],"claim_attempt_counts":{"1":1,"2":0,"3":0,"4":0,"5":0},"last_checkpoint":"2026-08-03T14:40:00Z","last_known_git_commit":null,"publication_allowed":false}
+{
+  "schema_version": 1,
+  "openreview_id": "XMSaWRpEPS",
+  "phase": "claim_3_finite_norm_ratio_toy_complete",
+  "next_action": "independent_review_claim_3_toy_against_literal_table_1_formula",
+  "active_run_ids": [],
+  "completed_milestones": [
+    "live_duplicate_gate",
+    "live_contract_saved",
+    "source_pinned",
+    "claim_1_source_cpu_audit",
+    "claim_3_finite_norm_ratio_toy"
+  ],
+  "failed_attempts": [],
+  "claim_attempt_counts": {
+    "1": 1,
+    "2": 0,
+    "3": 1,
+    "4": 0,
+    "5": 0
+  },
+  "last_checkpoint": "2026-08-03T16:40:00Z",
+  "last_known_git_commit": null,
+  "publication_allowed": false,
+  "claim_3_outcome": {
+    "verdict": "toy",
+    "scope": "Finite local Table-1 L1 and S1 norm-ratio calculation from recorded four-gradient inputs with scale control; not DDP/FSDP or training evidence.",
+    "evidence": [
+      "outputs/claim3_norm_ratio_toy/raw.json",
+      "outputs/claim3_norm_ratio_toy/summary.json",
+      "outputs/claim3_norm_ratio_toy/SHA256SUMS"
+    ]
+  }
+}
