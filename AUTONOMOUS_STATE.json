@@ -3,6 +3,7 @@
   "openreview_id": "XMSaWRpEPS",
   "phase": "claim_3_finite_norm_ratio_toy_complete",
   "next_action": "independent_review_claim_3_toy_against_literal_table_1_formula",
+  "github_repository": "https://github.com/MachineLearning-Nerd/icml26-non-euclidean-gradient-noise-scales",
   "active_run_ids": [],
   "completed_milestones": [
     "live_duplicate_gate",
