@@ -31,6 +31,6 @@
     {"path": "src/claim3_norm_ratio_toy.py", "sha256": "34b4d504e7a5ec16723f2f3dd18ae80d4481e5b6145d346c530da032a40a5d91"},
     {"path": "tests/test_claim3_norm_ratio.py", "sha256": "98a31ba2365cfe0252d73c9c9bcca8616cf7f02ff29afe258ddc5da5bc4f13ed"},
     {"path": "tests/test_contract.py", "sha256": "78d32aba76a86752e6866ad5e62262d8af53019b427959866448026981f0f5ea"},
-    {"path": "verify_final.py", "sha256": "1bced69da0a4485d6009c78fc49072a3a2a8fef9b932ff6dd95e448a6d163706"}
+    {"path": "verify_final.py", "sha256": "4485916ea0659319fe3fc730de29ac34fcdbba4ef6139c794183fa04051eca54"}
   ]
 }

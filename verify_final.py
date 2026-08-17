@@ -66,7 +66,11 @@ def check_checksum_file(path):
         if not line.strip():
             continue
         digest, relative = line.split(maxsplit=1)
-        check_sha(ROOT / relative.strip(), digest)
+        relative = relative.strip()
+        candidate = ROOT / relative
+        if not candidate.is_file():
+            candidate = ROOT / Path(path).parent / relative
+        check_sha(candidate, digest)
 
 
 head = git("rev-parse", "HEAD").strip()
