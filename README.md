@@ -1,8 +1,10 @@
-# Non-Euclidean GNS: Source-Pinned ICML 2026 Reproduction Audit
+# Non-Euclidean GNS: ICML 2026 Reproduction Audit
 
-This repository is a claim-by-claim reproduction audit for **“Adaptive Batch Sizes Using Non-Euclidean Gradient Noise Scales for Stochastic Sign and Spectral Descent.”** It pins the paper source, explains how each claim is produced, records the local norm-ratio toy, and separates paper-reported training results from independently checked evidence.
+This repository is a claim-by-claim audit of **Adaptive Batch Sizes Using Non-Euclidean Gradient Noise Scales for Stochastic Sign and Spectral Descent**. It pins the paper artifacts, explains how the paper produces each claim, records a bounded local norm-ratio toy, and keeps paper-reported training numbers separate from independently generated evidence.
 
-> **Current status:** Claim 1 is **inconclusive** under the local-only compute policy. Claim 3 has a **finite local norm-ratio toy**. The Llama training experiments, distributed variance estimator, and step-reduction claims have not been reproduced here.
+> **Current status:** The source and local feasibility boundary are documented. Claim 3 has a finite norm-ratio toy only. The Llama training, vision training, distributed estimator, and reported step-reduction claims are not reproduced here.
+
+The standardized repository is `icml26-non-euclidean-gradient-noise-scales`. Its former name was `icml26-repro-XMSaWRpEPS-non-euclidean-gradient-noise-scales`. The published dossier is defined by CLAIM_EVIDENCE.md, SOURCE_AUDIT.md, ENVIRONMENT.md, REPORT.md, BRANCH_AUDIT.md, claims.json, EVIDENCE_MANIFEST.json, and verify_final.py. The overall verdict is `INCONCLUSIVE_SCOPED_TO_SOURCE_AND_BOUNDED_TOY`; `publication_allowed` is false.
 
 ## Paper and resources
 
@@ -10,22 +12,23 @@ This repository is a claim-by-claim reproduction audit for **“Adaptive Batch S
 - OpenReview: [XMSaWRpEPS](https://openreview.net/forum?id=XMSaWRpEPS)
 - Pinned paper PDF: evidence/source/arxiv.pdf
 - Pinned paper source: evidence/source/arxiv_source.tar.gz
+- Source checksum file: evidence/source/SHA256SUMS
 
-The paper argues that ordinary Euclidean gradient-noise-scale (GNS) estimates do not match optimizers whose update geometry is non-Euclidean. It derives a Manhattan norm GNS for sign-based updates and a nuclear norm GNS for spectral/matrix-sign updates, then uses those estimates to adapt batch size during distributed training.
+The paper argues that Euclidean gradient-noise-scale estimates are mismatched with optimizers whose update geometry is non-Euclidean. It derives a Manhattan norm GNS for sign-based updates and a nuclear norm GNS for spectral updates, then uses those metrics to adapt batch size in distributed training.
 
 ## What the paper does
 
-The paper’s claim-production path is:
+The paper’s production path is:
 
 1. Treat the optimizer’s dual norm as the natural metric for gradient-estimation noise.
-2. For signSGD/sign-based updates, estimate coordinate-wise standard deviations and define the Manhattan GNS as the squared l1 noise norm divided by the squared l1 gradient norm.
-3. For stochastic spectral descent, form a row-wise gradient-noise covariance and define the Nuclear GNS as the squared nuclear norm of the covariance square root divided by the squared nuclear norm of the matrix gradient.
-4. In distributed data-parallel training, use local mini-batch gradients from each rank as samples. Aggregate the coordinate-wise squared gradients or row-wise Gram matrices with AllReduce; in FSDP, use the corresponding ReduceScatter/AllGather path.
-5. Smooth noise and signal with exponential moving averages, update GNS periodically after warm-up, make batch growth monotonic, and scale the learning rate with the square root of batch size.
-6. Compare constant-batch, Euclidean-GNS, and non-Euclidean-GNS training on Llama 3 language workloads and SimpleViT/ImageWoof vision workloads.
-7. Measure validation loss and the number of optimizer steps needed to reach the constant-batch baseline’s minimum validation loss.
+2. For signSGD and Signum, estimate coordinate-wise single-sample standard deviations and form the squared l1 noise-to-signal ratio.
+3. For stochastic spectral descent and Muon, estimate a row-wise gradient covariance and form the squared nuclear norm ratio.
+4. In DDP, treat local mini-batch gradients on each rank as independent samples. Aggregate coordinate-wise squared gradients or row-wise Gram matrices; in FSDP, use the corresponding ReduceScatter/AllGather path.
+5. Smooth noise and signal with exponential moving averages, update the estimate periodically after warm-up, keep batch growth monotonic, and scale the learning rate with the square root of batch size.
+6. Compare constant-batch, Euclidean-GNS, and non-Euclidean-GNS training on Llama 3 language workloads and SimpleViT/ImageWoof and ResNet-18/CIFAR-10 vision workloads.
+7. Report validation loss and the number of optimizer steps required to reach a constant-batch baseline.
 
-The paper reports 160M- and 1B-parameter Llama 3 experiments, C4 token budgets, SignSGD, Signum, AdamW, stochastic spectral descent, and Muon. The 160M language setup uses 3.2B tokens, sequence length 2048, ten seeds, and a single node with eight H100 GPUs according to the pinned source.
+The pinned source describes 160M- and 1B-parameter Llama 3 experiments on C4, SignSGD, Signum, AdamW, stochastic spectral descent, and Muon. The reported 160M setup uses 3.2B tokens, sequence length 2048, ten seeds, and one node with eight H100 GPUs. Those paper-scale runs are not present in this repository.
 
 ## Repository status
 
@@ -33,28 +36,38 @@ The paper reports 160M- and 1B-parameter Llama 3 experiments, C4 token budgets, 
 | --- | --- |
 | Compute | Local CPU / local GTX 1050 only |
 | Claim 1 | Inconclusive: the literal 160M-parameter, 3.2B-token benchmark is not locally feasible |
-| Claim 3 | Toy: finite vector/matrix gradients and local norm-ratio calculations |
+| Claim 3 | Toy only: finite vector/matrix gradients and local norm-ratio arithmetic |
 | Claims 2, 4, 5 | Unverified |
 | Training implementation | Not present in this repository |
 | Distributed runtime | Not present; no DDP/FSDP run is recorded |
-| Checkpoints or C4 data | Not present |
-| Publication of training results | Not allowed without training logs, model state, data/protocol, and metric evidence |
+| Models, datasets, checkpoints | Not present |
+| Publication of training results | Not allowed without the required run artifacts |
 
-The CSV files inside the pinned paper source archive are treated as paper-linked artifacts, not as results generated by this repository.
+The CSV files inside the pinned paper source archive are paper-linked artifacts, not outputs generated by this repository.
 
 ## Contents
 
 | Path | Purpose |
 | --- | --- |
-| contract/live_claims.json | Five paper claims and their verification labels |
+| contract/live_claims.json | Original five-claim contract |
 | evidence/source/ | Pinned PDF, source archive, and checksums |
-| outputs/claim1_source_audit/ | Local feasibility audit for the main training claim |
-| src/claim1_audit.py | Recreates the local Claim 1 audit record |
+| outputs/claim1_source_audit/ | Local feasibility audit for the headline training claim |
+| src/claim1_audit.py | Recreates the Claim 1 audit record |
 | src/claim3_norm_ratio_toy.py | Finite Manhattan/Nuclear norm-ratio toy |
 | outputs/claim3_norm_ratio_toy/ | Toy inputs, outputs, summary, and checksums |
 | tests/ | Small contract and toy checks |
 | STATUS.md | Human-readable status and next action |
 | AUTONOMOUS_STATE.json | Machine-readable run state and evidence boundary |
+| CLAIM_EVIDENCE.md | Claim production paths and local evidence |
+| SOURCE_AUDIT.md | Source hashes, archive audit, and exact source anchors |
+| ENVIRONMENT.md | Compute policy and missing paper-scale layers |
+| REPORT.md | Final scoped verdict |
+| CITATION.cff | Machine-readable citation |
+| AUTHOR_THANK_YOU.md | Thank-you note to the authors |
+| BRANCH_AUDIT.md | Repository, branch, and attribution audit |
+| claims.json | Machine-readable claim expansion |
+| EVIDENCE_MANIFEST.json | Hash manifest for the published state |
+| verify_final.py | Fail-closed local and fresh-clone verifier |
 
 ## Branch inventory
 
@@ -62,29 +75,30 @@ The CSV files inside the pinned paper source archive are treated as paper-linked
 | --- | --- | --- |
 | main | Published source-pinned audit, documentation, and bounded local evidence | Current default branch |
 
-Only main is present. No claim-specific or legacy branch is currently carrying separate work.
+Only `main` is present locally and on the public remote. It contains the original source-pinned audit, the finite Claim 3 toy, and this standardized dossier. The obsolete local attribution backup branch and stale original ref were removed after a recoverable bundle was written. Future work should remain scoped to `main` and update the claim ledger and machine-readable state together.
 
 ## Claim-to-evidence ledger
 
-The authoritative claim text is preserved in contract/live_claims.json. The table below records what would produce each claim and what this repository currently proves.
+The original claim text is preserved in contract/live_claims.json. The table below explains how each claim is produced and what this repository currently proves.
 
 | Claim | How the paper produces it | Evidence in this repository | Status |
 | --- | --- | --- | --- |
-| 1. Non-Euclidean GNS reduces steps while matching or improving validation loss for Signum and Muon, including 66.61% and 66.77% reductions on the 160M Llama 3 setup. | Train the specified Llama model on C4 for 3.2B tokens across ten seeds; compare constant batch, Euclidean GNS, and non-Euclidean GNS; measure validation loss and steps to the baseline minimum. | The pinned source archive contains the paper tables and CSV traces. This repository has no Llama model, C4 data, training loop, checkpoint, or independent log. | **Inconclusive / unverified locally** |
-| 2. The same 160M setup reports 22.58% for signSGD, 67.13% for AdamW, and 16.49% for stochastic spectral descent. | Repeat the same controlled training protocol for each optimizer and calculate median step reduction against the constant-batch reference. | Values are paper-reported in the pinned source; no corresponding local training evidence exists. | **Unverified** |
-| 3. The Manhattan and Nuclear GNS metrics are squared ratios of the appropriate dual-norm noise and signal terms. | Compute coordinate standard deviations for sign updates or the row-covariance square root for matrix updates, then divide the squared dual-norm noise by the squared dual-norm global gradient. | src/claim3_norm_ratio_toy.py computes a four-sample vector case and a four-sample 2x2 matrix case. It records l1_gns=0.48195497964664763 and s1_gns=0.23082879701965114. | **Toy only** |
-| 4. On 1B-parameter Llama 3, adaptive batching reports 31.84% and 12.11% step reductions for signSGD and Signum, while AdamW does not reach the constant-batch baseline loss. | Train the 1B model on the 22B-token C4 setup, track validation loss, and calculate steps to the B=256 baseline loss. | The paper table is pinned in sections/experiments.tex inside the source archive; no 1B model, data, checkpoint, or log is present locally. | **Unverified** |
-| 5. Algorithm 1 estimates variance efficiently from per-rank local gradients using AllReduce/ReduceScatter-compatible operations. | Run distributed training, collect local rank gradients, compute the unbiased coordinate variance or row covariance estimates, smooth signal/noise, and update batch size after warm-up. | The source archive contains the equations and algorithm. There is no DDP/FSDP implementation or distributed execution in this repository. | **Unverified** |
+| 1. Non-Euclidean GNS reduces steps while matching or improving validation loss for Signum and Muon, including 66.61% and 66.77% reductions on the 160M Llama 3 setup. | Train the specified 160M Llama 3 on 3.2B C4 tokens across ten seeds; compare constant, Euclidean-GNS, and non-Euclidean-GNS schedules; measure validation loss and steps to the baseline minimum. | The source archive contains the paper table and CSV traces. No Llama model, C4 data, training loop, checkpoint, or independent log is present. | **Inconclusive / unverified locally** |
+| 2. The same 160M setup reports 22.58% for signSGD, 67.13% for AdamW, and 16.49% for stochastic spectral descent. | Repeat the controlled 160M protocol for each optimizer and calculate median step reduction against the constant-batch reference. | The values are paper-reported in the pinned source; no corresponding local training evidence exists. | **Unverified** |
+| 3. Manhattan and Nuclear GNS are squared ratios of the appropriate dual-norm noise and signal terms. | Compute coordinate standard deviations for sign updates or the row-covariance square root for matrix updates, then divide the squared dual-norm noise by the squared dual-norm global gradient. | src/claim3_norm_ratio_toy.py computes four recorded vector gradients and four recorded 2x2 matrix gradients. It records l1_gns=0.48195497964664763 and s1_gns=0.23082879701965114. | **Toy only** |
+| 4. On 1B-parameter Llama 3, adaptive batching reports 31.84% and 12.11% step reductions for signSGD and Signum, while AdamW does not reach the constant-batch baseline loss. | Train the 1B model on the 22B-token C4 setup, track validation loss, and calculate steps to the B=256 baseline loss. | The 1B table is pinned in the source archive; no 1B model, data, checkpoint, or log is present locally. | **Unverified** |
+| 5. Algorithm 1 estimates variance efficiently from per-rank local gradients using AllReduce/ReduceScatter-compatible operations. | Run distributed training, collect local rank gradients, compute coordinate variance or row covariance, smooth signal/noise, and update batch size after warm-up. | The source archive contains the equations and algorithm. There is no DDP/FSDP implementation or distributed execution in this repository. | **Unverified** |
 
 ### Toy evidence boundary
 
-The local toy uses four recorded vector gradients and four recorded 2x2 matrix gradients. It calculates coordinate variance, a row-covariance matrix, a diagonal square-root proxy for that covariance, and the two norm ratios. The current scale7_control field records the expected ratio equality but does not independently rerun a separately scaled input through the full calculation. Therefore this is a formula diagnostic, not evidence for distributed estimation, convergence, batch scheduling, or the paper’s benchmark numbers.
+The local toy uses four recorded vector gradients and four recorded 2x2 matrix gradients. It calculates coordinate variance, a row-covariance matrix, a diagonal square-root proxy, and the two norm ratios. The `scale7_control` field records the same ratios for a stated scale-control case, but the toy does not independently establish distributed estimation, convergence, batch scheduling, or any paper benchmark number. This is a formula diagnostic, not a reproduction of the method’s training results.
 
 ## Reproduce the current local evidence
 
 From the repository root:
 
 ~~~bash
+python3 verify_final.py
 python3 src/claim1_audit.py
 python3 src/claim3_norm_ratio_toy.py
 python3 -m pytest -q tests/test_contract.py tests/test_claim3_norm_ratio.py
@@ -92,13 +106,13 @@ shasum -a 256 evidence/source/arxiv.pdf
 shasum -a 256 evidence/source/arxiv_source.tar.gz
 ~~~
 
-The toy writes its raw JSON, summary, and output checksums. The source checksums pin the paper artifacts used for this audit.
+The toy script rewrites its raw JSON, summary, and output checksums. The source checksum file pins the paper artifacts used for this audit.
 
 ## Reproduction policy
 
-- A **paper-reported** step reduction or validation loss is not an independently reproduced result.
-- A **toy** checks only its finite inputs and stated arithmetic boundary.
-- A claim becomes **reproduced** only when the required model, data, optimizer, distributed procedure, logs, and metric calculation are available and independently checked.
+- A paper-reported step reduction or validation loss is not an independently reproduced result.
+- A toy checks only its finite inputs and stated arithmetic boundary.
+- A claim becomes reproduced only when the required model, data, optimizer, distributed procedure, logs, and metric calculation are available and independently checked.
 - Resource limits are part of the result: this audit uses local CPU/local GTX 1050 compute and does not use paid, remote, or upgraded cloud compute.
 
 ## Citation
@@ -117,4 +131,4 @@ The toy writes its raw JSON, summary, and output checksums. The source checksums
 
 ## Thank you
 
-Thank you to Hiroki Naganuma, Shagun Gupta, Youssef Briki, Ioannis Mitliagkas, Irina Rish, Parameswaran Raman, and Hao-Jun Michael Shi for sharing the paper source and detailed derivations. This audit is intended to credit the original work while making the distinction between paper-linked artifacts, local formula checks, and true end-to-end reproduction explicit.
+Thank you to Hiroki Naganuma, Shagun Gupta, Youssef Briki, Ioannis Mitliagkas, Irina Rish, Parameswaran Raman, and Hao-Jun Michael Shi for sharing the paper source, derivations, experimental tables, and implementation details. This audit is intended to credit the original work while making the distinction between paper-linked artifacts, local formula checks, and true end-to-end reproduction explicit.

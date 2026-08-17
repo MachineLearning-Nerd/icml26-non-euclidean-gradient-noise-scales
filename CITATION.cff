@@ -1,0 +1,33 @@
+cff-version: 1.2.0
+message: "If this audit or its bounded norm-ratio toy is useful, please cite the original paper."
+title: "Adaptive Batch Sizes Using Non-Euclidean Gradient Noise Scales for Stochastic Sign and Spectral Descent"
+type: article
+version: "1.0"
+date-released: 2026-08-17
+authors:
+  - family-names: Naganuma
+    given-names: Hiroki
+  - family-names: Gupta
+    given-names: Shagun
+  - family-names: Briki
+    given-names: Youssef
+  - family-names: Mitliagkas
+    given-names: Ioannis
+  - family-names: Rish
+    given-names: Irina
+  - family-names: Raman
+    given-names: Parameswaran
+  - family-names: Shi
+    given-names: Hao-Jun Michael
+identifiers:
+  - type: arxiv
+    value: "2602.03001"
+    description: "arXiv preprint"
+repository-code: "https://github.com/MachineLearning-Nerd/icml26-non-euclidean-gradient-noise-scales"
+url: "https://arxiv.org/abs/2602.03001"
+keywords:
+  - gradient noise scale
+  - adaptive batch size
+  - signSGD
+  - spectral descent
+  - distributed training

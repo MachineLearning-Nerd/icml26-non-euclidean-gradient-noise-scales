@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "repository": "MachineLearning-Nerd/icml26-non-euclidean-gradient-noise-scales",
+  "excluded": [
+    "AUTONOMOUS_STATE.json",
+    "EVIDENCE_MANIFEST.json"
+  ],
+  "files": [
+    {"path": ".gitignore", "sha256": "2f4f55d4d130d7116fe0b2dd9a11d94b8403a54165e3743c3a81465239485806"},
+    {"path": ".trackio/logbook/pages/claim-3-norm-ratio-toy/page.md", "sha256": "168741b6b5e3becdda4a0da88aa21f370051d8d165289067c284d322ec1670c6"},
+    {"path": "AUTHOR_THANK_YOU.md", "sha256": "6b2d8eb9dc41ca6d2f594284f327fcf0e31e1a8f8bdffe22caebedd2ab555d22"},
+    {"path": "BRANCH_AUDIT.md", "sha256": "8b48ecfc228415fa1ed7e5397972fa3f856f4ee651b95a2f0b84d7b4846f4fd4"},
+    {"path": "CITATION.cff", "sha256": "c4901287f5708eb15bc887d1c7f60ebd0b737f72e509bd874e1e1a6c35e036e0"},
+    {"path": "CLAIM_EVIDENCE.md", "sha256": "c65d4047757b05819a49fb3ce46a89ba811c286e08683622c887150de7ba7765"},
+    {"path": "ENVIRONMENT.md", "sha256": "88bbdd7e9203f6d86d0f5d38c85487cebc966ad0aceafea40b826a9a7ee0a7da"},
+    {"path": "README.md", "sha256": "18f67363a2e0f76fbc238f1692d9165214e7f7a55492fc3bb740ff6f0b121676"},
+    {"path": "REPORT.md", "sha256": "e8b1f6af926e6c6c4c71d1046a380deb7b17273497900e938fce70b1a19a3df8"},
+    {"path": "SOURCE_AUDIT.md", "sha256": "7f3e295290ac032fb9dcd204aa9fa8f58b8b568ce3ca7d8928299d2451386e9b"},
+    {"path": "STATUS.md", "sha256": "d212edcd90760cdeacaa166c832982dac7774e69bff7a04a36b445c692c0f044"},
+    {"path": "branch-audit.md", "sha256": "226bb63906d86ac652edc08170e79b8d5de8d1a378169218c7e3f143083b7289"},
+    {"path": "claims.json", "sha256": "7f640ae624dce6d66061d977a0c94652d51a722866a234f13be1e37ceda8b0a1"},
+    {"path": "contract/live_claims.json", "sha256": "1ca4d402395e9b0f841c074fb34dffcb9f577cde464d226a73e48f6cf1cbe420"},
+    {"path": "evidence/source/SHA256SUMS", "sha256": "7f7be7bbabfb6f526c323cd293d5ecbb8b1c5cbfcc901fdcf2b3f15c4258d6a0"},
+    {"path": "evidence/source/arxiv.pdf", "sha256": "2894a33a0229e0193aec2f2c71e41f518251390f7de92a04e30c62cfd82506d2"},
+    {"path": "evidence/source/arxiv_source.tar.gz", "sha256": "5375db1a154fbebff89303c15957bdef4592eb0556c02cb8f625285e563ca5de"},
+    {"path": "outputs/claim1_source_audit/summary.json", "sha256": "ab19dad30857ed0307fca355e1e316a2af0df29a5282950adbb07d1c4331f060"},
+    {"path": "outputs/claim3_norm_ratio_toy/SHA256SUMS", "sha256": "fc00d85df9b1c4f6268f0cad218c8fa5caa9c332476d5fb036befde1354fbc99"},
+    {"path": "outputs/claim3_norm_ratio_toy/raw.json", "sha256": "258f24051c47d8f704f864cc0c4b5c5b6a19d1d85b54b567425403ad8d890140"},
+    {"path": "outputs/claim3_norm_ratio_toy/summary.json", "sha256": "b8f2aacada1288cddfacad6a88b1654b19a31c6a3d15f1fb29e71e8af0eabf0b"},
+    {"path": "src/claim1_audit.py", "sha256": "f27e3e0ae2a8e368f183036c6d79f7461f582ab148aa17a2b594cb1432101eef"},
+    {"path": "src/claim3_norm_ratio_toy.py", "sha256": "34b4d504e7a5ec16723f2f3dd18ae80d4481e5b6145d346c530da032a40a5d91"},
+    {"path": "tests/test_claim3_norm_ratio.py", "sha256": "98a31ba2365cfe0252d73c9c9bcca8616cf7f02ff29afe258ddc5da5bc4f13ed"},
+    {"path": "tests/test_contract.py", "sha256": "78d32aba76a86752e6866ad5e62262d8af53019b427959866448026981f0f5ea"},
+    {"path": "verify_final.py", "sha256": "1bced69da0a4485d6009c78fc49072a3a2a8fef9b932ff6dd95e448a6d163706"}
+  ]
+}

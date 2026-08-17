@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "repository": "MachineLearning-Nerd/icml26-non-euclidean-gradient-noise-scales",
+  "former_repository": "MachineLearning-Nerd/icml26-repro-XMSaWRpEPS-non-euclidean-gradient-noise-scales",
+  "openreview_id": "XMSaWRpEPS",
+  "paper": {
+    "title": "Adaptive Batch Sizes Using Non-Euclidean Gradient Noise Scales for Stochastic Sign and Spectral Descent",
+    "arxiv": "2602.03001",
+    "authors": [
+      "Hiroki Naganuma",
+      "Shagun Gupta",
+      "Youssef Briki",
+      "Ioannis Mitliagkas",
+      "Irina Rish",
+      "Parameswaran Raman",
+      "Hao-Jun Michael Shi"
+    ]
+  },
+  "overall_verdict": "INCONCLUSIVE_SCOPED_TO_SOURCE_AND_BOUNDED_TOY",
+  "publication_allowed": false,
+  "original_contract": {
+    "path": "contract/live_claims.json",
+    "claim_count": 5,
+    "precedence": "The five source-pinned claims in the original contract are preserved."
+  },
+  "claims": [
+    {
+      "id": "C1",
+      "status": "unverified",
+      "source_anchor": "sections/experiments.tex:1-36,124-129",
+      "paper_claim": "Non-Euclidean GNS reduces 160M Llama steps for Signum and Muon while matching the baseline loss.",
+      "producer": "Ten-seed 160M Llama/C4 training, constant and adaptive schedules, validation-loss baseline crossing, and median step reduction.",
+      "local_evidence": "Pinned source and feasibility audit only; no model, data, checkpoint, or run trace."
+    },
+    {
+      "id": "C2",
+      "status": "unverified",
+      "source_anchor": "sections/experiments.tex:1-25,124-129",
+      "paper_claim": "The same 160M setup reports 22.58%, 67.13%, and 16.49% step reductions for signSGD, AdamW, and spectral descent.",
+      "producer": "Controlled optimizer-specific training and metric aggregation against constant-batch baselines.",
+      "local_evidence": "Paper table only; no independent optimizer runs."
+    },
+    {
+      "id": "C3",
+      "status": "toy_source_norm_ratio",
+      "source_anchor": "sections/methods_new.tex:42-113,118-205,270-317",
+      "paper_claim": "The Manhattan and Nuclear GNS metrics are squared ratios in the optimizer-matched dual norms.",
+      "producer": "Coordinate standard deviations or row covariance, dual-norm calculation, and squared noise-to-signal ratio.",
+      "local_evidence": "Finite four-vector/four-matrix toy with recorded outputs and a documented spectral proxy."
+    },
+    {
+      "id": "C4",
+      "status": "unverified",
+      "source_anchor": "sections/experiments.tex:124-159",
+      "paper_claim": "The 1B Llama setup reports 31.84% and 12.11% reductions for signSGD and Signum while AdamW misses the baseline.",
+      "producer": "1B/22B-token C4 training, adaptive schedule, validation-loss crossing, and step-count aggregation.",
+      "local_evidence": "Paper table only; no 1B model, data, checkpoint, or trace."
+    },
+    {
+      "id": "C5",
+      "status": "unverified",
+      "source_anchor": "sections/implementation.tex:3-49,97-112,155-175",
+      "paper_claim": "Algorithm 1 provides a distributed, low-overhead variance estimator and adaptive batch-size procedure.",
+      "producer": "Per-rank local gradients, AllReduce or ReduceScatter/AllGather statistics, EMA, warm-up, monotonic batch updates, and square-root learning-rate scaling.",
+      "local_evidence": "Pinned equations and algorithm only; no DDP/FSDP implementation or execution."
+    }
+  ]
+}
